@@ -2,4 +2,4 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => "Laravel RESTful API");
+Route::get('/', fn() => config('app.name') . " RESTful API");

@@ -1,0 +1,9 @@
+{
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=827846
+    "recommendations": [
+        "vscode-icons-team.vscode-icons",
+        "bradlc.vscode-tailwindcss",
+        "laravel.vscode-laravel",
+        "mhutchie.git-graph"
+    ]
+}
