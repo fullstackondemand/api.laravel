@@ -2,48 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function signup(Request $req)
+    public function signup(UserRequest $req)
     {
-        /** Signup User Form Data */
-        $user = Validator::make($req->all(), [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|unique:users,username',
-            'password' => 'required|confirmed',
-        ]);
-
-        // if form data is invalid
-        if ($user->fails())
-            return response()->json(['errors' => $user->errors()], 400);
-
         // create user row
-        User::create($user->validated());
+        User::create($req->all());
 
         // created response
         return response()->json(['message' => 'User signup successfully.'], 201);
     }
 
-    public function login(Request $req)
+    public function login(LoginRequest $req)
     {
-        /** Login User Form Data */
-        $credentials = Validator::make($req->all(), [
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-
-        // if form data is invalid
-        if ($credentials->fails())
-            return response()->json(['errors' => $credentials->errors()], 400);
-
         // authentication with login form data
-        if (Auth::attempt($credentials->validated()))
+        if (Auth::attempt($req->all()))
 
             // response with access token
             return response()->json(['message' => 'User login successfully.', 'token' => Auth::user()->createToken('accessToken')->plainTextToken], 200);
