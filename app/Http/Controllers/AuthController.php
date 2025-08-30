@@ -15,8 +15,7 @@ class AuthController extends Controller
         // create user row
         User::create($req->all());
 
-        // created response
-        return response()->json(['message' => 'User signup successfully.'], 201);
+        return response()->created('User signup successfully.');
     }
 
     public function login(LoginRequest $req)
@@ -25,11 +24,13 @@ class AuthController extends Controller
         if (Auth::attempt($req->all()))
 
             // response with access token
-            return response()->json(['message' => 'User login successfully.', 'token' => Auth::user()->createToken('accessToken')->plainTextToken], 200);
+            return response()->ok([
+                'message' => 'User login successfully.',
+                'accessToken' => Auth::user()->createToken('accessToken')->plainTextToken,
+                'user' => Auth::user()
+            ]);
         else
-
-            // unauthorized response
-            return response()->json(['error' => 'Invalid user credentials'], 401);
+            return response()->badRequest('Invalid user credentials.');
     }
 
     public function logout(Request $req)
@@ -37,6 +38,6 @@ class AuthController extends Controller
         // delete current user access token
         $req->user()->currentAccessToken()->delete();
 
-        return response()->json(['message' => Auth::check()], 200);
+        return response()->ok('User logout successfully.');
     }
 }

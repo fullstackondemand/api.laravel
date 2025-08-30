@@ -5,7 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // forbidden response
-Route::get('login', fn() => response()->json(['error' => 'Unauthorized request. Please login to continue.'], 403))->name('login');
+Route::get('login', fn() => response()->unauthorized())->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
 

@@ -34,6 +34,6 @@ class UserRequest extends FormRequest
     // if form data is invalid
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 400));
+        throw new HttpResponseException(response()->badRequest($validator->errors()));
     }
 }
