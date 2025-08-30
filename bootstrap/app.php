@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -28,6 +29,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (MethodNotAllowedHttpException $e, $req) {
             if ($req->acceptsJson())
                 return response()->json(['status' => false, 'error' => 'The requested method is not allowed for this endpoint.'], 405);
+        });
+
+        // Access Denied
+        $exceptions->render(function (AccessDeniedHttpException $e, $req) {
+            if ($req->acceptsJson())
+                return response()->json(['status' => false, 'error' => 'Unauthorized request. Please login to continue.'], 403);
         });
 
     })->create();
