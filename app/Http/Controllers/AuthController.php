@@ -12,7 +12,7 @@ class AuthController extends Controller
 {
     public function signup(UserRequest $req)
     {
-        // create user row
+        // insert a new user record
         User::create($req->all());
 
         return response()->created('User signup successfully.');

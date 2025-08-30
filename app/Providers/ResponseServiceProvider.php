@@ -46,7 +46,7 @@ class ResponseServiceProvider extends ServiceProvider
         });
 
         // 200 - Ok
-        Response::macro('ok', function (string|array $data) {
+        Response::macro('ok', function (string|array|object $data) {
 
             /** Response Status */
             $status = true;

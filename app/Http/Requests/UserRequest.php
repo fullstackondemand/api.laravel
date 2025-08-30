@@ -11,11 +11,14 @@ class UserRequest extends FormRequest
 {
     public function rules(): array
     {
+        /** Get Route User */
+        $user = $this->route('user');
+
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'username' => 'required|alpha_num|min:6|unique:users,username',
-            'password' => ['required', new Password, 'confirmed'],
+            'name' => $user ? 'sometimes' : 'required',
+            'email' => ($user ? 'sometimes' : 'required') . '|email|unique:users,email',
+            'username' => ($user ? 'sometimes' : 'required') . "|alpha_num|min:6|unique:users,username",
+            'password' => [$user ? 'sometimes' : 'required', new Password, 'confirmed'],
         ];
     }
 

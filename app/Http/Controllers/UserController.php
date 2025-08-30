@@ -2,36 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return response()->json(User::all(), 200);
+        // get all user records
+        return response()->ok(UserResource::collection(User::all()));
     }
 
-    public function store(Request $req)
+    public function store(UserRequest $req)
     {
+        // insert a new user record
         User::create($req->all());
-        return response()->json(['message' => 'User created successfully.'], 200);
+
+        return response()->created('User created successfully.');
     }
 
     public function show(User $user)
     {
-        return response()->json(User::find($user->id), 200);
+        // get a user record
+        return response()->ok(UserResource::make(User::find($user->id)));
     }
 
-    public function update(Request $req, User $user)
+    public function update(UserRequest $req, User $user)
     {
+        // update user record
         User::find($user->id)->update($req->all());
-        return response()->json(['message' => 'User updated successfully.'], 200);
+
+        return response()->ok('User updated successfully.');
     }
 
     public function destroy(User $user)
     {
+        // delete user record
         User::destroy($user->id);
-        return response()->json(['message' => 'User deleted successfully.'], 200);
+
+        return response()->ok('User deleted successfully.');
     }
 }
