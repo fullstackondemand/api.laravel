@@ -29,7 +29,7 @@ class ResponseServiceProvider extends ServiceProvider
         // 405 - Method Not Allowed
         Response::macro('methodNotAllowed', fn() => response()->json(['status' => false, 'error' => 'The requested method is not allowed for this endpoint.'], 405));
 
-        // 400 Bad Request
+        // 400 - Bad Request
         Response::macro('badRequest', function (string|object $error) {
 
             /** Response Status */

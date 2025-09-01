@@ -5,13 +5,29 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $req)
     {
+        $users = User::select()
+
+            // search by name or email
+            ->whereLike('name', "%{$req->search}%")
+            ->orwhereLike('email', "%{$req->search}%")
+
+            // sorting (default: id asc)
+            ->orderBy($req->sort ?? 'id', $req->order ?? 'asc')
+
+            // pagination (default: 10 1)
+            ->paginate($req->limit ?? 10, page: $req->page ?? 1);
+
         // get all user records
-        return response()->ok(UserResource::collection(User::all()));
+        return response()->ok([
+            'users' => UserResource::collection($users),
+            'paginator' => collect($users)->only(['current_page', 'last_page', 'per_page', 'total'])
+        ]);
     }
 
     public function store(UserRequest $req)

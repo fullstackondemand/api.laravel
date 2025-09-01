@@ -4,7 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-// forbidden response
+// Unauthorized Route
 Route::get('login', fn() => response()->unauthorized())->name('login');
 
 Route::middleware('auth:sanctum')->group(function () {
