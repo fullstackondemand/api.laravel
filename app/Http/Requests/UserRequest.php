@@ -15,10 +15,10 @@ class UserRequest extends FormRequest
         $user = $this->route('user');
 
         return [
-            'name' => $user ? 'sometimes' : 'required',
-            'email' => ($user ? 'sometimes' : 'required') . '|email|unique:users,email',
-            'username' => ($user ? 'sometimes' : 'required') . "|alpha_num|min:6|unique:users,username",
-            'password' => [$user ? 'sometimes' : 'required', new Password, 'confirmed'],
+            'name' => $user ? 'required_without_all:email,username,password' : 'required',
+            'email' => ($user ? 'required_without_all:name,username,password' : 'required') . '|email|unique:users,email',
+            'username' => ($user ? 'required_without_all:name,email,password' : 'required') . "|alpha_num|min:6|unique:users,username",
+            'password' => [$user ? 'required_without_all:name,email,username' : 'required', new Password, 'confirmed'],
         ];
     }
 
@@ -26,6 +26,7 @@ class UserRequest extends FormRequest
     {
         return [
             '*.required' => 'This field is required.',
+            '*.required_without_all' => 'This field is required.',
             '*.email' => 'Please enter valid email address.',
             '*.confirmed' => 'Your passwords do no match.',
             'email.unique' => 'This email address is already registered.',
