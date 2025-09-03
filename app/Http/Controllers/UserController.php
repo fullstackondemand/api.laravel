@@ -41,13 +41,13 @@ class UserController extends Controller
     public function show(User $user)
     {
         // get a user record
-        return response()->ok(UserResource::make(User::find($user->id)));
+        return response()->ok(UserResource::make($user));
     }
 
     public function update(UserRequest $req, User $user)
     {
         // update user record
-        User::find($user->id)->update($req->all());
+        $user->update($req->all());
 
         return response()->ok('User updated successfully.');
     }
@@ -55,7 +55,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // delete user record
-        User::destroy($user->id);
+        $user->delete();
 
         return response()->ok('User deleted successfully.');
     }
