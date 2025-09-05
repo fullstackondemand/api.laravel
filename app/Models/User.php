@@ -10,8 +10,8 @@ class User extends Authenticatable
     // create and delete user personal access token
     use HasApiTokens;
 
-    // define not added fields
-    protected $guarded = ['password_confirmation'];
+    // fill record only specific columns
+    protected $fillable = ['name', 'username', 'email', 'password'];
 
     // define hide fields
     protected $hidden = ['password'];
